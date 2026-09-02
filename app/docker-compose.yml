@@ -1,0 +1,43 @@
+services:
+
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v3.5.0
+    container_name: mlflow-server
+
+    command: >
+      mlflow server
+      --host 0.0.0.0
+      --port 5000
+      --backend-store-uri sqlite:////mlflow-data/mlflow.db
+      --artifacts-destination /mlartifacts
+      --allowed-hosts "*"
+
+    ports:
+      - "5000:5000"
+
+    volumes:
+      - ./mlflow/mlflow-data:/mlflow-data
+      - ./mlflow/artifacts:/mlartifacts
+
+    restart: unless-stopped
+
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+
+    container_name: diabete-risk-api
+
+    depends_on:
+      - mlflow
+
+    environment:
+      MODEL_NAME: diabetes-risk-model
+      MODEL_STAGE: Staging
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+
+    ports:
+      - "8000:8000"
+
+    restart: unless-stopped

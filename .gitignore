@@ -1,6 +1,6 @@
 # Données (volumineuses / sous licence — ne pas committer)
-data/*.csv
-!data/README.md
+# data/*.csv
+# !data/README.md
 
 # Sorties générées
 outputs/*
@@ -20,3 +20,6 @@ env/
 .DS_Store
 .vscode/
 .idea/
+
+mlflow/
+
