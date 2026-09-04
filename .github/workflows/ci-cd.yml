@@ -49,7 +49,7 @@ jobs:
           docker push $IMAGE_NAME
 
       - name: Start container
-        run:
+        run: |
           docker run -d \
             --name diabetes-api \
             -p 8000:8000 \
