@@ -1,8 +1,9 @@
 name: MLOps Pipeline with MLflow
-
 on:
   push:
     branches: [ main ]
+
+permissions: write-all
 
 jobs:
   test:
