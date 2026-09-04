@@ -42,7 +42,7 @@ jobs:
 
       - name: Build Docker image
         run:
-          docker build -t $IMAGE_NAME .
+          run: docker build -f app/api/Dockerfile -t $IMAGE_NAME app/api/
 
       - name: Push Docker image
         run:
