@@ -6,7 +6,7 @@ import pandas as pd
 from sklearn.metrics import recall_score
 
 
-MODEL_PATH = Path("outputs/diabetes_risk_model.pkl")
+MODEL_PATH = Path("app/api/diabetes_risk_model.pkl")
 REFERENCE_DATA_PATH = Path("data/reference/diabetes_reference.csv")
 
 MIN_RECALL = 0.60
