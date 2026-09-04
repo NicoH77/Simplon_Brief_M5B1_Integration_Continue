@@ -3,6 +3,9 @@ on:
   push:
     branches: [ main ]
 
+env:
+  MODEL_BACKEND: pkl
+
 permissions: write-all
 
 jobs:
@@ -59,31 +62,12 @@ jobs:
         run:
           sleep 30
 
-
       - name: List containers
         run: 
           docker ps -a
 
       - name: Container logs
         run: 
-          docker logs diabetes-api
-
-      
-      - name: Smoke test b
-        run:
-          curl --i http://localhost:8000/health
-
-      - name: Container logs
-        run: 
-          docker logs diabetes-api
-
-      - name: Smoke test c
-        run: |
-          curl -v http://localhost:8000/health
-
-      - name: Logs after test
-        if: always()
-        run: |
           docker logs diabetes-api
 
       - name: Smoke test
