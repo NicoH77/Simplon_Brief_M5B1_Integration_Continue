@@ -26,7 +26,7 @@ def test_model() -> float:
     FEATURES = [
         "pregnancies", "glucose", "blood_pressure", "skin_thickness",
         "insulin", "bmi", "diabetes_pedigree", "age",
-]
+        ]
 
     X = df[FEATURES]
     y_true = df["outcome"]
@@ -49,7 +49,8 @@ def test_model() -> float:
         f"{recall:.4f} >= {MIN_RECALL}"
     )
     sys.exit(0)
-        return recall
+        
+    return recall
 
 
 if __name__ == "__main__":
