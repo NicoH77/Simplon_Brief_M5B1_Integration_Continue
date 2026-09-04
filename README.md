@@ -25,14 +25,19 @@ Prédire le risque de diabète à partir de caractéristiques médicales de pati
 
 ```text
 .
+├── .github/
+│   └── workflows/         # GitHub Actions
+├── app/                   # API et ML flow
+│   └── api/               # api diabetes-api
+│   └── mlflow/            # artefacts & données mlflow
 ├── data/                  # Jeux de données
 ├── docs/                  # Documentation
 ├── notebooks/             # Analyses exploratoires
+│   └── entrainement_modele.ipynb
 ├── outputs/               # Modèles et artefacts générés
 ├── src/                   # Code source
-├── tests/                 # Tests automatisés
-├── .github/
-│   └── workflows/         # GitHub Actions
+│   └── train_model.py     # entrainement du modèle
+│   └── test_model.py      # test du modèle
 ├── requirements.txt
 └── README.md
 ```
