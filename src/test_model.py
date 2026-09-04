@@ -35,12 +35,21 @@ def test_model() -> float:
 
     recall = recall_score(y_true, y_pred)
 
-    assert recall >= MIN_RECALL, (
-        f"Recall insuffisant : "
-        f"{recall:.3f} < {MIN_RECALL:.2f}"
-    )
+    print(f"Recall obtenu : {recall:.4f}")
 
-    return recall
+    if recall < MIN_RECALL:
+        print(
+            f"❌ Recall insuffisant : "
+            f"{recall:.4f} < {MIN_RECALL}"
+        )
+        sys.exit(1)
+
+    print(
+        f"✅ Recall validé : "
+        f"{recall:.4f} >= {MIN_RECALL}"
+    )
+    sys.exit(0)
+        return recall
 
 
 if __name__ == "__main__":
