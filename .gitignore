@@ -3,7 +3,7 @@
 # !data/README.md
 
 # Sorties générées
-outputs/*
+# outputs/*
 !outputs/.gitkeep
 
 # Python
