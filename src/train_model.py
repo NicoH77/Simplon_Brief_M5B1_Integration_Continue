@@ -151,7 +151,7 @@ def train_model(search,X_train,X_test,y_train,y_test,model_name="diabetes-risk-m
         disp.plot(ax=ax)
 
         # Log de la matrice dans MLFLow
-        mlflow.log_figure(fig, "confusion_matrix.png"        )
+        mlflow.log_figure(fig, "confusion_matrix.png")
 
         plt.close()        
 
