@@ -44,6 +44,6 @@ def test_model() -> float:
 
 
 if __name__ == "__main__":
-    score = evaluate_model()
+    score = test_model()
 
     print(f"Recall : {score:.3f}")
