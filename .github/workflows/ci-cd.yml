@@ -57,7 +57,7 @@ jobs:
 
       - name: Wait API
         run:
-          sleep 15
+          sleep 30
 
 
       - name: List containers
@@ -71,3 +71,21 @@ jobs:
       - name: Smoke test
         run:
           curl --fail http://localhost:8000/health
+      
+      - name: Smoke test b
+        run:
+          curl --i http://localhost:8000/health
+
+      - name: Container logs
+        run: 
+          docker logs diabetes-api
+
+      - name: Smoke test c
+        run: |
+          curl -v http://localhost:8000/health
+
+      - name: Logs after test
+        if: always()
+        run: |
+          docker logs diabetes-api
+
