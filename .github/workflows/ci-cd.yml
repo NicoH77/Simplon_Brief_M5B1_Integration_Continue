@@ -38,18 +38,18 @@ jobs:
 
       - name: Build Docker image
         run:
-          docker build -t ghcr.io/${{ github.repository }}/diabetes-api:latest .
+          docker build -t ghcr.io/${{ github.repository | lower }}/diabetes-api:latest .
 
       - name: Push Docker image
         run:
-          docker push ghcr.io/${{ github.repository }}/diabetes-api:latest
+          docker push ghcr.io/${{ github.repository | lower }}/diabetes-api:latest
 
       - name: Start container
         run:
           docker run -d \
             --name diabetes-api \
             -p 8000:8000 \
-            ghcr.io/${{ github.repository }}/diabetes-api:latest
+            ghcr.io/${{ github.repository | lower }}/diabetes-api:latest
 
       - name: Wait API
         run:
