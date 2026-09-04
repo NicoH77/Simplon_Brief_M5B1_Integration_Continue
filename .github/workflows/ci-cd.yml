@@ -59,6 +59,15 @@ jobs:
         run:
           sleep 15
 
+
+      - name: List containers
+        run: 
+          docker ps -a
+
+      - name: Container logs
+        run: 
+          docker logs diabetes-api
+
       - name: Smoke test
         run:
           curl --fail http://localhost:8000/health
