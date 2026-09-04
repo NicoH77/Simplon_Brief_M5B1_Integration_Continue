@@ -54,6 +54,16 @@ from pydantic import BaseModel
 import pandas as pd
 import joblib
 import numpy as np
+from pathlib import Path
+
+
+# ------------------------------------------------------------------------------
+# Initialisation de l'environnement
+# ------------------------------------------------------------------------------
+MODEL_BACKEND = os.getenv(
+    "MODEL_BACKEND",
+    "mlflow"
+)
 
 # ------------------------------------------------------------------------------
 # Initialisation de l'application FastAPI
@@ -62,6 +72,7 @@ app = FastAPI(
     title="Diabete Risks Classifier API",
     version="1.0"
 )
+
 
 # ------------------------------------------------------------------
 # Schéma des données d'entrée
@@ -78,22 +89,36 @@ class PatientData(BaseModel):
     age: int
 
 # ------------------------------------------------------------------
-# CONFIGURATION MLFLOW - Chargement du modèle
+# CONFIGURATION MLFLOW - Chargement du modèle selon le contexte
 # ------------------------------------------------------------------
+if MODEL_BACKEND == "pkl":
+    MODEL_PATH = Path("/app/api/diabetes_risk_model.pkl")
+    features = None
+    client = None
 
-MODEL_NAME = os.getenv("MODEL_NAME", "diabetes-risk-model")
-MODEL_STAGE = os.getenv("MODEL_STAGE", "Staging")
-MODEL_URI = f"models:/{MODEL_NAME}/{MODEL_STAGE}"
+    print("🚀 Chargement du modèle depuis un fichier PKL")
+    artifact = joblib.load(MODEL_PATH)
+    model = artifact["model"]
+    features = artifact["features"]
+    print(f"✅ Modèle chargé : {MODEL_PATH}")
 
-MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000")
+else:
+    print("🚀 Chargement du modèle depuis MLFlow")
+    
+    MODEL_NAME = os.getenv("MODEL_NAME", "diabetes-risk-model")
+    MODEL_STAGE = os.getenv("MODEL_STAGE", "Staging")
+    MODEL_URI = f"models:/{MODEL_NAME}/{MODEL_STAGE}"
 
-mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+    # attention : faire référence à l'instance MLflow qui s'éxécute sur l'hote (en local)
+    MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "http://host.docker.internal:5000")
 
-model = mlflow.sklearn.load_model(MODEL_URI)
+    mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 
-client = MlflowClient()
+    model = mlflow.sklearn.load_model(MODEL_URI)
 
-print("✅  Modèle chargé")
+    client = MlflowClient()
+
+    print("✅  Modèle chargé")
 
 
 
@@ -132,6 +157,13 @@ def get_model_info():
     Returns:
         dict: Informations du modèle issu du MLflow Model Registry.
     """
+    if MODEL_BACKEND == "pkl":
+        
+        return {
+        "source": "joblib",
+        "model_path": str(MODEL_PATH),
+        "status": "loaded"
+        }
 
     try:
         latest_model = client.get_latest_versions(
